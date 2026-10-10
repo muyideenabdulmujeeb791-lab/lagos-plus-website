@@ -143,19 +143,11 @@ button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padd
   <footer class="footer">Lagos Plus · A fan-made life simulation prototype · Not affiliated with any existing Lagos Life brand.</footer>
 </div>
 
-<div class="modal-backdrop" id="nameModal">
-  <div class="modal">
-    <div class="eyebrow">Create your character</div><h2>Welcome to Lagos Plus</h2>
-    <p>Every great Lagos story starts somewhere. What should we call you?</p>
-    <label for="playerName">Your character's name</label><input id="playerName" maxlength="22" placeholder="e.g. Muyideen Abdulmujeeb" autocomplete="name">
-    <div class="modal-actions"><button class="primary" id="startBtn">Start my life →</button></div>
-  </div>
-</div>
 
 <script>
 (() => {
   const SAVE_KEY = "lagosPlusSave_v1";
-  const initialState = () => ({name:"Player",cash:5000,energy:80,happiness:70,health:90,day:1,location:"Yaba",started:false,home:"None",ride:"None",inventory:[],workCount:0,visitCount:0,missionsClaimed:[]});
+  const initialState = () => ({name:"Player",cash:5000,energy:80,happiness:70,health:90,day:1,location:"Yaba",started:true,home:"None",ride:"None",inventory:[],workCount:0,visitCount:0,missionsClaimed:[]});
   let game = initialState();
   const $ = id => document.getElementById(id);
   const clamp = n => Math.max(0, Math.min(100, Math.round(n)));
@@ -201,10 +193,7 @@ button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padd
     sessionStorage.setItem("lagosPlusDemoSignedIn", "yes");
     $("authGate").classList.add("hidden");
     $("gameApp").classList.remove("hidden");
-    if (game.started) {
-      $("nameModal").classList.add("hidden");
-      $("welcomeNotice").textContent = `👋 Welcome back, ${game.name}. Your game dashboard is ready.`;
-    }
+    $("welcomeNotice").textContent = `👋 Welcome, ${game.name}. Your game dashboard is ready.`;
     update(); save(false);
   });
   if (sessionStorage.getItem("lagosPlusDemoSignedIn") === "yes") {
@@ -415,16 +404,6 @@ button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padd
   $("buyCarBtn").addEventListener("click", () => buyProperty("car"));
   document.querySelectorAll("[data-buy]").forEach(button => button.addEventListener("click", () => buyShopItem(button.dataset.buy)));
 
-  $("startBtn").addEventListener("click", () => {
-    const entered = $("playerName").value.trim();
-    game.name = entered || "Muyideen Abdulmujeeb";
-    game.started = true;
-    $("nameModal").classList.add("hidden");
-    $("welcomeNotice").textContent = `🎉 Welcome, ${game.name}! Your Lagos story has started. Choose your next move below.`;
-    log(`🎉 ${game.name} moved to Lagos with ${naira(game.cash)} and a dream.`);
-    update(); save(false);
-  });
-  $("playerName").addEventListener("keydown", e => { if (e.key === "Enter") $("startBtn").click(); });
   $("workNow").addEventListener("click", () => work("dispatch"));
   $("exploreNow").addEventListener("click", explore);
   $("eatBtn").addEventListener("click", eat);
@@ -438,14 +417,11 @@ button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padd
     game = initialState();
     $("log").replaceChildren();
     log("✨ A fresh start! Welcome to your new life in Yaba.");
-    $("nameModal").classList.remove("hidden");
-    $("playerName").value = "";
     update(); save(false);
   });
   const hadSave = load();
   update();
   if (hadSave && game.started) {
-    $("nameModal").classList.add("hidden");
     $("welcomeNotice").textContent = `👋 Welcome back, ${game.name}. Your saved life is ready to continue.`;
     log(`↩️ Welcome back, ${game.name}. Your progress was loaded.`);
   }
