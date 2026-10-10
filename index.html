@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lagos Plus Ultra</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7f3;
+      color: #10251e;
+    }
+    header {
+      background: #081b19;
+      color: white;
+      padding: 22px;
+      font-size: 25px;
+      font-weight: bold;
+    }
+    header span { color: #f5c66b; }
+    main {
+      max-width: 850px;
+      margin: 60px auto;
+      padding: 25px;
+    }
+    h1 { font-size: 48px; }
+    h1 span { color: #087f5b; }
+    p { line-height: 1.8; color: #64716a; }
+    input {
+      padding: 15px;
+      width: 65%;
+      max-width: 400px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    button {
+      padding: 15px 20px;
+      background: #087f5b;
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+      gap: 15px;
+      margin-top: 35px;
+    }
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      border: 1px solid #e1e8e1;
+    }
+  </style>
+</head>
+<body>
+  <header>LAGOS<span>PLUS</span></header>
+  <main>
+    <p>YOUR CITY. YOUR EXPERIENCE.</p>
+    <h1>Discover the best of <span>Lagos.</span></h1>
+    <p>Find places to eat, events to attend, exciting experiences and new places to explore.</p>
+
+    <input id="search" placeholder="Search food, events, nightlife...">
+    <button onclick="searchPlaces()">Search</button>
+
+    <div class="cards" id="cards">
+      <div class="card"><h3>🍽️ Food & Dining</h3><p>Discover restaurants and cafés.</p></div>
+      <div class="card"><h3>🎵 Nightlife</h3><p>Explore music and nightlife.</p></div>
+      <div class="card"><h3>🎉 Events</h3><p>Find exciting things to do.</p></div>
+      <div class="card"><h3>🌴 Experiences</h3><p>Discover new places around Lagos.</p></div>
+    </div>
+  </main>
+
+  <script>
+    function searchPlaces() {
+      const query = document.getElementById("search").value.toLowerCase();
+      document.querySelectorAll(".card").forEach(card => {
+        card.style.display = card.innerText.toLowerCase().includes(query)
+          ? "" : "none";
+      });
+    }
+  </script>
+</body>
+</html>
