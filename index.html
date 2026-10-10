@@ -55,7 +55,7 @@ button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padd
 <div class="app hidden" id="gameApp">
   <header class="topbar">
     <div class="brand"><div class="logo">L+</div><div><h1>Lagos Plus</h1><p>Your life. Your choices. Your Lagos.</p></div></div>
-    <div class="top-actions"><button class="secondary" id="saveBtn">Save game</button><button class="secondary" id="resetBtn">New life ↻</button></div>
+    <div class="top-actions"><button class="secondary" id="saveBtn">Save game</button><button class="secondary" id="resetBtn">New life ↻</button><button class="danger" id="logoutBtn" type="button">Log out ↪</button></div>
   </header>
 
   <section class="hero">
@@ -412,6 +412,23 @@ button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padd
   document.querySelectorAll("[data-job]").forEach(button => button.addEventListener("click", () => work(button.dataset.job)));
   document.querySelectorAll("[data-place]").forEach(button => button.addEventListener("click", () => visit(button.dataset.place)));
   $("saveBtn").addEventListener("click", () => save(true));
+  $("logoutBtn").addEventListener("click", () => {
+    save(false);
+    sessionStorage.removeItem("lagosPlusDemoSignedIn");
+    $("gameApp").classList.add("hidden");
+    $("authGate").classList.remove("hidden");
+    $("gateForm").reset();
+    $("gateMessage").textContent = "You have logged out of this demo. Log in again to return to Lagos Plus.";
+    gateMode = "login";
+    document.querySelectorAll("[data-gate-tab]").forEach(button => button.classList.toggle("active", button.dataset.gateTab === "login"));
+    $("gateNameLabel").classList.add("hidden");
+    $("gateName").classList.add("hidden");
+    $("gateName").required = false;
+    $("gatePasswordLabel").classList.remove("hidden");
+    $("gatePassword").classList.remove("hidden");
+    $("gatePassword").required = true;
+    $("gateSubmit").textContent = "Log in & enter";
+  });
   $("resetBtn").addEventListener("click", () => {
     if (!confirm("Start a new life? This replaces your saved Lagos Plus progress on this device.")) return;
     game = initialState();
